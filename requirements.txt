@@ -1,4 +1,1 @@
-plotly_express
-plotly
-pandas
-streamlit
+plotly>=5.17.0
