@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import io
-import plotly_express as px
+import plotly.express as px
 st.set_page_config(page_title="Wheat Charts", page_icon="🌾")
 def check_password():
     """Returns `True` if the user had the correct password."""
