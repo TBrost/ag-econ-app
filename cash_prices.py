@@ -80,7 +80,8 @@ if check_password():
     # Allow users to select summary columns for the line chart
     selected_columns = st.multiselect(
         'Select summary columns for the line chart',
-        ['Average', 'Median', 'Max', 'Min', 'Standard Deviation']
+        ['Average', 'Median', 'Max', 'Min', 'Standard Deviation'],
+        ['Median', 'Max', 'Min']
     )
 
     #st.line_chart(df_pivot[['Average','Max','Min']])
