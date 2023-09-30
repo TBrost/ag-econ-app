@@ -45,7 +45,7 @@ def basis_page():
     df_pivot['Min'] = df_pivot.min(axis=1)
     df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
 
-    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'year'])
+    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
     st.dataframe(df_pivot)
 
     filename= f'{ATTRIBUTE}_{CITY}_data.csv'

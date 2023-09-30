@@ -36,14 +36,14 @@ def cash_page():
 
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
 
-    df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location'], columns=['year'], values='Value')
+    df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location', 'Contract', 'Date'], columns=['year'], values='Value')
     df_pivot['Average'] = df_pivot.mean(axis=1)
     df_pivot['Median'] = df_pivot.median(axis=1)
     df_pivot['Max'] = df_pivot.max(axis=1)
     df_pivot['Min'] = df_pivot.min(axis=1)
     df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
 
-    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
+    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location', 'Contract', 'Date'])
     st.dataframe(df_pivot)
 
 
