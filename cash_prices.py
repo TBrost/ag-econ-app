@@ -29,10 +29,9 @@ def cash_page():
         ('Rexburg / Ririe','Idaho Falls','Blackfoot / Pocatello','Grace / Soda Springs','Burley / Rupert','Meridian',
     'Nezperce / Craigmont','Nampa / Weiser','Twin Falls / Buhl / Jerome / Wendell','Moscow / Genesee'))
 
-
     ATTRIBUTE = st.selectbox(
         'Select a Strain',
-        ('Barley - 48 lbs+', 'Malting', 'Wheat - Milling (SWW)', 'HRW (11.5% Protein)', 'DNS (14% Protein)', 'HWW'))
+        ('Barley (Feed)', 'Barley (Malting)', 'SWW (Milling)', 'HRW (11.5% Protein)', 'DNS (14% Protein)', 'HWW'))
 
 
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
@@ -44,19 +43,25 @@ def cash_page():
     df_pivot['Min'] = df_pivot.min(axis=1)
     df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
 
-    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'year'])
+    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
     st.dataframe(df_pivot)
+
+
 
     filename= f'{ATTRIBUTE}_{CITY}_data.csv'
     def convert_df(df):
         # IMPORTANT: Cache the conversion to prevent computation on every rerun
         return df.to_csv().encode('utf-8')
+    
+
     csv = convert_df(df_pivot)
+
     st.download_button(
-    label="Download data as CSV",
-    data=csv,
-    file_name=filename,
-    mime='text/csv',)
+        label="Download data as CSV",
+        data=csv,
+        file_name=filename,
+        mime='text/csv',
+    )
     # Allow users to select summary columns for the line chart
     selected_columns = st.multiselect(
         'Select summary columns for the line chart',
