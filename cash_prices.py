@@ -38,6 +38,7 @@ def cash_page():
     # Filter the DataFrame based on the selected date range
     df = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
 
+    df = df[['Location','year','week_of_year', 'Attribute','Value']]
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
 
     df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location', 'Contract', 'Date'], columns=['year'], values='Value')
