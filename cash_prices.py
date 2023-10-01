@@ -36,7 +36,7 @@ def cash_page():
     end_date = st.date_input("End Date")
 
     # Filter the DataFrame based on the selected date range
-    df = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
+    df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
 
     df = df[['Location','year','week_of_year', 'Attribute','Value']]
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
