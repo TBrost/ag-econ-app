@@ -32,7 +32,11 @@ def cash_page():
     ATTRIBUTE = st.selectbox(
         'Select a Strain',
         ('Barley (Feed)', 'Barley (Malting)', 'SWW (Milling)', 'HRW (11.5% Protein)', 'DNS (14% Protein)', 'HWW'))
+    start_date = st.date_input("Start Date")
+    end_date = st.date_input("End Date")
 
+    # Filter the DataFrame based on the selected date range
+    df = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
 
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
 
