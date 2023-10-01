@@ -3,6 +3,8 @@ import pandas as pd
 import requests
 import io
 import plotly.express as px
+from datetime import datetime
+from datetime import date
 def cash_page():
     st.title("Cash Prices")
     #st.write("Below is the cash price for wheat in different strands in different parts of the state. Select the region and strand you are interested in and the table and the chart will adjust to your input. This data is separated into rows by week of the year. In many areas and strands there is no information recorded, but for every week there should be an aggregate value for referance")
@@ -32,9 +34,14 @@ def cash_page():
     ATTRIBUTE = st.selectbox(
         'Select a Strain',
         ('Barley (Feed)', 'Barley (Malting)', 'SWW (Milling)', 'HRW (11.5% Protein)', 'DNS (14% Protein)', 'HWW'))
-    start_date = st.date_input("Start Date")
+    start_date = st.date_input("Start Date", date(2015, 12, 31))
+    start_date = datetime(start_date.year, start_date.month, start_date.day)
     end_date = st.date_input("End Date")
+    end_date = datetime(end_date.year, end_date.month, end_date.day)
 
+    df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
+    df['Date'] = df['Date'].dt.strftime("%Y/%d/%m")
+    df['Date'] = pd.to_datetime(df['Date'], format='%Y/%d/%m')
     # Filter the DataFrame based on the selected date range
     df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
 
@@ -74,17 +81,40 @@ def cash_page():
         ['Median', 'Max', 'Min']
     )
 
-    #st.line_chart(df_pivot[['Average','Max','Min']])
     # Create a Plotly line chart
-    fig = px.line(df_pivot, x='week of year', y=selected_columns, title='Three Lines Chart')
+    fig = px.line(df_pivot, x='week of year', y=selected_columns, title='Value Summaries by week of the year:')
     st.plotly_chart(fig)
 
+    st.subheader('Annual Summary')
+    
+    # List of columns to exclude from summarization
+    exclude_columns = ['Location', 'Attribute','week of year','Average','Median','Max','Min','Standard Deviation']
+
+    # Identify columns to summarize (exclude the excluded columns)
+    columns_to_summarize = [col for col in df_pivot.columns if col not in exclude_columns]
 
 
+    # Summarize selected columns and save to another DataFrame
+    summary_df = pd.DataFrame({
+        'Mean': df_pivot[columns_to_summarize].mean(),
+        'Min': df_pivot[columns_to_summarize].min(),
+        'Max': df_pivot[columns_to_summarize].max()
+    })
+    # Reshape the DataFrame
+    summary_df = summary_df.reset_index(names=['year', 'Mean', 'Min', 'Max'])
+    fig2 = px.line(summary_df, x='year', y=['Mean', 'Max', 'Min'], title='Summary values over years (not adjusted for inflation):')
+    summary_df.set_index('year', inplace=True)
+    # Transpose (T) the DataFrame and reset the index
+    reshaped_df = summary_df.T
+    st.dataframe(reshaped_df)
+    st.plotly_chart(fig2)
 
-    #st.subheader('Charted over the Year')
-    #st.write("Seelct which metrics you want to see, you can select multiple")
-
+    #selected_columns2 = st.selectbox(
+    #    'Select summary columns for the line chart',
+    #    [2016, 2017, 2018, 2019, 2020,2021,2022, 2023, 2024],7
+    #)
+    #fig2 = px.line(df_pivot, x='week of year', y=selected_columns2, title='Value over selected year year:')
+    #st.plotly_chart(fig2)
 
     #def link_to_github():
     #    href = '<a href="https://github.com/Lusk27/app_display/tree/main/Data" target="_blank">Link to GitHub</a>'
