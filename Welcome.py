@@ -39,9 +39,10 @@ def welcome_page():
     st.markdown("# Main page 🎈")
     st.sidebar.markdown("# Main page 🎈")
     st.header("Welcome to the BYU-I Idaho Grains App")
+    st.write('UNDER CONSTRUCTION - I\'m currently working on fixing a few formatting issues so the data and charts are gunna get funky for the next few days.')
     st.subheader('Instructions')
     st.write('In this application we have infomation about selling crops in Idaho. Each tab to your left will have different tools to help you evaulate \nwhen and where to sell. Each page will allow you to choose a location as well as specify a crop. You will then be presented with historical data for each week of the year in both a table and a chart to help you analyze time based trends.')
-
+    
 
 page_names_to_funcs = {
     "Main Page": welcome_page,
