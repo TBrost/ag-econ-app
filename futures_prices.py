@@ -41,7 +41,7 @@ def futures_page():
     end_date = st.date_input("End Date")
     end_date = datetime(end_date.year, end_date.month, end_date.day)
 
-    df['Date'] = pd.to_datetime(df['Date'], format='%m-%d-%Y')
+    df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d')
     df['Date'] = df['Date'].dt.strftime("%Y/%d/%m")
     df['Date'] = pd.to_datetime(df['Date'], format='%Y/%d/%m')
     # Filter the DataFrame based on the selected date range
