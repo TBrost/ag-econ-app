@@ -29,7 +29,7 @@ def basis_page():
     CITY = st.selectbox(
         'Select a City',
         ('Rexburg / Ririe','Idaho Falls','Blackfoot / Pocatello','Grace / Soda Springs','Burley / Rupert','Meridian',
-    'Nezperce / Craigmont','Nampa / Weiser','Twin Falls / Buhl / Jerome / Wendell','Moscow / Genesee'))
+    'Nezperce / Craigmont','Lewiston','Twin Falls / Buhl / Jerome / Wendell','Moscow / Genesee'))
 
 
     ATTRIBUTE = st.selectbox(
