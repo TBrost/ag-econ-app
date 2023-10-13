@@ -26,10 +26,13 @@ def cash_page():
 
 
     #st.download_button("Download Data", df)
+    on = st.toggle('Filter by City')
+
     CITY = st.selectbox(
-        'Select a City',
+        'Select a City (only works if switch above is active)',
         ('Rexburg / Ririe','Idaho Falls','Blackfoot / Pocatello','Grace / Soda Springs','Burley / Rupert','Meridian',
     'Nezperce / Craigmont','Lewiston','Twin Falls / Buhl / Jerome / Wendell','Moscow / Genesee'))
+
 
     ATTRIBUTE = st.selectbox(
         'Select a Strain',
@@ -45,20 +48,34 @@ def cash_page():
     # Filter the DataFrame based on the selected date range
     df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
 
-    df = df[['Location','year','week_of_year', 'Attribute','Value']]
-    wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
+    wheat_table = df[['year','week_of_year', 'Attribute','Value']]
+    wheat_table=wheat_table.query('Attribute == @ATTRIBUTE')
+    wheat_table = wheat_table.groupby(['year', 'week_of_year', 'Attribute'])['Value'].mean().reset_index()
 
-    df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location'], columns=['year'], values='Value')
-    df_pivot['Average'] = df_pivot.mean(axis=1)
+    df_pivot = wheat_table.pivot(index=['Attribute','week_of_year'], columns=['year'], values='Value')
+    df_pivot['Average'] = df_pivot.mean(axis=1).round(2)
     df_pivot['Median'] = df_pivot.median(axis=1)
     df_pivot['Max'] = df_pivot.max(axis=1)
     df_pivot['Min'] = df_pivot.min(axis=1)
     df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
+    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year'])
 
-    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
+    if on:
+        wheat_table = df[['Location','year','week_of_year', 'Attribute','Value']]
+        wheat_table=wheat_table.query('Attribute == @ATTRIBUTE & Location == @CITY')
+
+        df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location'], columns=['year'], values='Value')
+        df_pivot['Average'] = df_pivot.mean(axis=1)
+        df_pivot['Median'] = df_pivot.median(axis=1)
+        df_pivot['Max'] = df_pivot.max(axis=1)
+        df_pivot['Min'] = df_pivot.min(axis=1)
+        df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
+
+        df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
     st.dataframe(df_pivot)
 
-
+    if not on:
+        CITY = "Idaho"
 
     filename= f'{ATTRIBUTE}_{CITY}_data.csv'
     def convert_df(df):
