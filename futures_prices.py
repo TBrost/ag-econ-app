@@ -7,8 +7,6 @@ from datetime import datetime
 from datetime import date
 def futures_page():
     st.title("Future Prices")
-    #st.write("Below is the cash price for wheat in different strands in different parts of the state. Select the region and strand you are interested in and the table and the chart will adjust to your input. This data is separated into rows by week of the year. In many areas and strands there is no information recorded, but for every week there should be an aggregate value for referance")
-
 
     # GitHub repository information
     owner = "tbrost"  # Replace with your GitHub username or organization name
@@ -105,9 +103,3 @@ def futures_page():
     reshaped_df = summary_df.T
     st.dataframe(reshaped_df)
     st.plotly_chart(fig2)
-
-    #def link_to_github():
-    #    href = '<a href="https://github.com/Lusk27/app_display/tree/main/Data" target="_blank">Link to GitHub</a>'
-    #    return href
-
-    #st.markdown(link_to_github(), unsafe_allow_html=True)

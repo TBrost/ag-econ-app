@@ -7,8 +7,6 @@ from datetime import datetime
 from datetime import date
 def cash_page():
     st.title("Cash Prices")
-    #st.write("Below is the cash price for wheat in different strands in different parts of the state. Select the region and strand you are interested in and the table and the chart will adjust to your input. This data is separated into rows by week of the year. In many areas and strands there is no information recorded, but for every week there should be an aggregate value for referance")
-
 
     # GitHub repository information
     owner = "tbrost"  # Replace with your GitHub username or organization name
@@ -26,7 +24,8 @@ def cash_page():
 
 
     #st.download_button("Download Data", df)
-    on = st.toggle('Filter by City')
+    st.header("Filters")
+    on = st.toggle('Filter by City', value=True)
 
     CITY = st.selectbox(
         'Select a City (only works if switch above is active)',
@@ -72,6 +71,8 @@ def cash_page():
         df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
 
         df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
+    st.header("Data")
+    st.write("All values in un-adjusted US dollars.")
     st.dataframe(df_pivot)
 
     if not on:
@@ -91,6 +92,7 @@ def cash_page():
         file_name=filename,
         mime='text/csv',
     )
+    
     # Allow users to select summary columns for the line chart
     selected_columns = st.multiselect(
         'Select summary columns for the line chart',
@@ -125,16 +127,3 @@ def cash_page():
     reshaped_df = summary_df.T
     st.dataframe(reshaped_df)
     st.plotly_chart(fig2)
-
-    #selected_columns2 = st.selectbox(
-    #    'Select summary columns for the line chart',
-    #    [2016, 2017, 2018, 2019, 2020,2021,2022, 2023, 2024],7
-    #)
-    #fig2 = px.line(df_pivot, x='week of year', y=selected_columns2, title='Value over selected year year:')
-    #st.plotly_chart(fig2)
-
-    #def link_to_github():
-    #    href = '<a href="https://github.com/Lusk27/app_display/tree/main/Data" target="_blank">Link to GitHub</a>'
-    #    return href
-
-    #st.markdown(link_to_github(), unsafe_allow_html=True)

@@ -1,0 +1,12 @@
+{
+    "https://shiny.byui.edu": {
+        "server_url": "https://shiny.byui.edu",
+        "filename": "C:\\RData\\BYUI\\ag-econ-app",
+        "app_url": "https://shiny.byui.edu/content/b43e00f9-362f-474b-a5ee-ead4dda0ecc6/",
+        "app_id": "b43e00f9-362f-474b-a5ee-ead4dda0ecc6",
+        "app_guid": "b43e00f9-362f-474b-a5ee-ead4dda0ecc6",
+        "title": "ag-econ-app",
+        "app_mode": "python-streamlit",
+        "app_store_version": 1
+    }
+}
