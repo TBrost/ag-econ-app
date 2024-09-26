@@ -48,6 +48,7 @@ def basis_page():
     df = df[['Location','year','week_of_year', 'Attribute','Value']]
 
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
+    wheat_table = wheat_table.groupby(['Location','year', 'week_of_year', 'Attribute'])['Value'].mean().reset_index()
 
     df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location'], columns=['year'], values='Value')
     df_pivot['Average'] = df_pivot.mean(axis=1)

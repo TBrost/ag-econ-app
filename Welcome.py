@@ -36,7 +36,7 @@ def check_password():
         return True
     
 def welcome_page():
-    st.markdown("# Main page ")
+    st.markdown("# Main page")
     st.sidebar.markdown("# Main page")
     st.header("Welcome to the BYU-I Idaho Grains App")
     #st.write('UNDER CONSTRUCTION - I\'m currently working on fixing a few formatting issues so the data and charts are gunna get funky for the next few days.')

@@ -49,6 +49,8 @@ def futures_page():
 
     wheat_table=df.query('Attribute == @ATTRIBUTE & Location == @CITY')
 
+    wheat_table = wheat_table.groupby(['Location','year', 'week_of_year', 'Attribute'])['Value'].mean().reset_index()
+
     df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location'], columns=['year'], values='Value')
     df_pivot['Average'] = df_pivot.mean(axis=1)
     df_pivot['Median'] = df_pivot.median(axis=1)

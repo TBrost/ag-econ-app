@@ -47,30 +47,34 @@ def cash_page():
     # Filter the DataFrame based on the selected date range
     df = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
 
-    wheat_table = df[['year','week_of_year', 'Attribute','Value']]
-    wheat_table=wheat_table.query('Attribute == @ATTRIBUTE')
-    wheat_table = wheat_table.groupby(['year', 'week_of_year', 'Attribute'])['Value'].mean().reset_index()
+    if not on:
+        wheat_table = df[['year','week_of_year', 'Attribute','Value']]
+        wheat_table=wheat_table.query('Attribute == @ATTRIBUTE')
+        wheat_table = wheat_table.groupby(['year', 'week_of_year', 'Attribute'])['Value'].mean().reset_index()
 
-    df_pivot = wheat_table.pivot(index=['Attribute','week_of_year'], columns=['year'], values='Value')
-    df_pivot['Average'] = df_pivot.mean(axis=1).round(2)
-    df_pivot['Median'] = df_pivot.median(axis=1)
-    df_pivot['Max'] = df_pivot.max(axis=1)
-    df_pivot['Min'] = df_pivot.min(axis=1)
-    df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
-    df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year'])
+        df_pivot = wheat_table.pivot(index=['Attribute','week_of_year'], columns=['year'], values='Value')
+        df_pivot['Average'] = df_pivot.mean(axis=1).round(2)
+        df_pivot['Median'] = df_pivot.median(axis=1)
+        df_pivot['Max'] = df_pivot.max(axis=1)
+        df_pivot['Min'] = df_pivot.min(axis=1)
+        df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
+        df_pivot = df_pivot.reset_index(names=['Attribute','week of year'])
+        df_pivot.insert(1, "Location", "Idaho")
 
     if on:
         wheat_table = df[['Location','year','week_of_year', 'Attribute','Value']]
-        wheat_table=wheat_table.query('Attribute == @ATTRIBUTE & Location == @CITY')
+        wheat_table = wheat_table.query('Attribute == @ATTRIBUTE & Location == @CITY')
+        wheat_table = wheat_table[['Location','year','week_of_year', 'Attribute','Value']]
+        wheat_table = wheat_table.groupby(['Location','year', 'week_of_year', 'Attribute'])['Value'].mean().reset_index()
 
-        df_pivot = wheat_table.pivot(index=['Attribute','week_of_year', 'Location'], columns=['year'], values='Value')
+        df_pivot = wheat_table.pivot(index=['Attribute','Location','week_of_year'], columns=['year'], values='Value')
         df_pivot['Average'] = df_pivot.mean(axis=1)
         df_pivot['Median'] = df_pivot.median(axis=1)
         df_pivot['Max'] = df_pivot.max(axis=1)
         df_pivot['Min'] = df_pivot.min(axis=1)
         df_pivot['Standard Deviation'] = df_pivot.std(axis=1)
 
-        df_pivot = df_pivot.reset_index(names=['Attribute', 'week of year', 'Location'])
+        df_pivot = df_pivot.reset_index(names=['Attribute', 'Location','week of year'])
     st.header("Data")
     st.write("All values in un-adjusted US dollars.")
     st.dataframe(df_pivot)
